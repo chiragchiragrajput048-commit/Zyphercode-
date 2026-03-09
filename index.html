@@ -1,0 +1,2653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zypher Code - Learn Programming the Smart Way</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1E3A8A;
+            --accent: #60A5FA;
+            --light-bg: #F0F6FF;
+            --soft-purple: #EDE9FE;
+            --white: #FFFFFF;
+            --gray: #6B7280;
+            --dark-gray: #374151;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark-gray);
+            background: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ===== HEADER / NAVIGATION ===== */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(37, 99, 235, 0.1);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--primary);
+            font-weight: 800;
+            border: 2.5px solid var(--primary);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .logo-icon::before {
+            content: 'ZC';
+            font-family: 'Arial', sans-serif;
+            letter-spacing: -2px;
+        }
+
+        .logo:hover .logo-icon {
+            border-color: var(--primary-dark);
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--dark-gray);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .notification-toggle {
+            position: relative;
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            color: var(--primary);
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification-toggle:hover {
+            color: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .notification-toggle.active {
+            color: #34d399;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: 2px solid white;
+        }
+
+        .notification-badge.hidden {
+            display: none;
+        }
+
+        .notification-center {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1999;
+            width: 350px;
+            max-height: 500px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .notification-center.open {
+            display: flex;
+        }
+
+        .notification-center-header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-center-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .notification-center-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .notification-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .notification-item {
+            padding: 1rem;
+            border-left: 4px solid var(--primary);
+            background: var(--light-bg);
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .notification-item.unread {
+            background: rgba(37, 99, 235, 0.08);
+            border-left-color: #2563EB;
+        }
+
+        .notification-item:hover {
+            background: var(--soft-purple);
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+
+        .notification-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            min-width: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .notification-item-title {
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 0.3rem;
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+
+        .notification-item-message {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .notification-item-time {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .notification-dot {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .notification-empty {
+            padding: 2rem;
+            text-align: center;
+            color: var(--gray);
+        }
+
+        .notification-center-footer {
+            padding: 1rem;
+            border-top: 1px solid var(--light-bg);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .notification-center-footer button {
+            flex: 1;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 0.85rem;
+        }
+
+        .notification-center-footer .btn-enable {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+        }
+
+        .notification-center-footer .btn-clear {
+            background: var(--light-bg);
+            color: var(--gray);
+        }
+
+        .notification-center-footer .btn-enable:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Browser Push Notification Toast */
+        .notification-toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            z-index: 3000;
+            max-width: 350px;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .notification-toast-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .notification-toast-title {
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 0.3rem;
+        }
+
+        .notification-toast-message {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--light-bg);
+            transform: translateY(-2px);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            min-height: calc(100vh - 80px);
+        }
+
+        .hero-content {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subheading {
+            font-size: 1.3rem;
+            color: var(--dark-gray);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .slider-dots {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--light-bg);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dot.active {
+            background: var(--primary);
+            width: 30px;
+            border-radius: 5px;
+        }
+
+        .hero-illustration {
+            position: relative;
+            height: 500px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .workspace-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .monitor {
+            width: 350px;
+            height: 250px;
+            background: linear-gradient(135deg, var(--light-bg), var(--soft-purple));
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 20px 60px rgba(37, 99, 235, 0.2);
+            position: relative;
+            border: 2px solid rgba(37, 99, 235, 0.1);
+        }
+
+        .monitor-screen {
+            width: 100%;
+            height: 100%;
+            background: #1a1a2e;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .code-line {
+            color: #60a5fa;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            animation: typewriter 1.5s ease-out infinite;
+        }
+
+        .code-line:nth-child(2) { color: #34d399; animation-delay: 0.2s; }
+        .code-line:nth-child(3) { color: #fbbf24; animation-delay: 0.4s; }
+
+        .monitor-stand {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 15px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+        }
+
+        .badge {
+            position: absolute;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .badge-python { top: 10%; left: -30px; animation-delay: 0s; }
+        .badge-js { top: 20%; right: -40px; animation-delay: 0.3s; }
+        .badge-cpp { bottom: 30%; right: -30px; animation-delay: 0.6s; }
+        .badge-html { bottom: 20%; left: -40px; animation-delay: 0.9s; }
+
+        .floating-icon {
+            position: absolute;
+            font-size: 2rem;
+            color: var(--primary);
+            opacity: 0.7;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .icon-code { top: 5%; right: 5%; animation-delay: 0s; }
+        .icon-gear { bottom: 15%; right: 10%; animation-delay: 0.5s; }
+        .icon-db { top: 30%; left: -50px; animation-delay: 1s; }
+        .icon-cloud { bottom: 25%; left: -30px; animation-delay: 1.5s; }
+
+        /* ===== PROGRAMMING LANGUAGES SECTION ===== */
+        .languages-section {
+            max-width: 1400px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .languages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .lang-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .lang-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.15);
+            border-color: var(--primary);
+        }
+
+        .lang-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .lang-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary-dark);
+        }
+
+        .lang-card p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        /* ===== FEATURES SECTION ===== */
+        .features-section {
+            max-width: 1400px;
+            margin: 6rem auto;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, var(--light-bg), var(--soft-purple));
+            border-radius: 20px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .feature-block {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .feature-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .feature-block h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary-dark);
+        }
+
+        .feature-block p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* ===== COURSES SECTION ===== */
+        .courses-section {
+            max-width: 1400px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .course-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+        }
+
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.15);
+        }
+
+        .course-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .course-info {
+            padding: 2rem;
+        }
+
+        .course-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .difficulty {
+            padding: 0.3rem 0.8rem;
+            background: var(--light-bg);
+            border-radius: 6px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* ===== CODE EDITOR SECTION ===== */
+        .editor-section {
+            max-width: 1400px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .editor-container {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(37, 99, 235, 0.2);
+            margin-top: 3rem;
+        }
+
+        .editor-header {
+            background: #0f3460;
+            padding: 1rem 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .editor-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff6b6b;
+        }
+
+        .editor-dot:nth-child(2) { background: #ffa502; }
+        .editor-dot:nth-child(3) { background: #2ecc71; }
+
+        .editor-content {
+            padding: 2rem;
+            color: #60a5fa;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===== YOUTUBE SECTION ===== */
+        .youtube-section {
+            max-width: 1400px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .youtube-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .video-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            cursor: pointer;
+        }
+
+        .video-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.15);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .play-button {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .video-card:hover .play-button {
+            transform: scale(1.15);
+            background: white;
+        }
+
+        .video-info {
+            padding: 1.5rem;
+        }
+
+        .video-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 0.8rem;
+        }
+
+        .video-desc {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .channel-link {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 2rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .channel-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        /* ===== COMMUNITY SECTION ===== */
+        .community-section {
+            max-width: 1400px;
+            margin: 6rem auto;
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            background: linear-gradient(135deg, var(--light-bg), var(--soft-purple));
+            border-radius: 20px;
+        }
+
+        .community-content h2 {
+            font-size: 2.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 2rem;
+        }
+
+        .community-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .community-icon {
+            font-size: 1.8rem;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .community-text h3 {
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.3rem;
+        }
+
+        .community-text p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* ===== TESTIMONIALS SECTION ===== */
+        .testimonials-section {
+            max-width: 1400px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            transition: var(--transition);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15);
+        }
+
+        .testimonial-stars {
+            color: #fbbf24;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .testimonial-text {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .author-info h4 {
+            color: var(--primary-dark);
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .author-info p {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        /* ===== PRICING SECTION ===== */
+        .pricing-section {
+            max-width: 1400px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2.5rem;
+            border: 2px solid rgba(37, 99, 235, 0.1);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--primary);
+            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.2);
+            transform: scale(1.05);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .pricing-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 2rem;
+        }
+
+        .pricing-price span {
+            font-size: 1rem;
+            color: var(--gray);
+            font-weight: 400;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features li {
+            color: var(--dark-gray);
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--light-bg);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .pricing-features li:before {
+            content: '✓';
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        .contact-section {
+            max-width: 1400px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .contact-container {
+            background: linear-gradient(135deg, var(--light-bg), var(--soft-purple));
+            border-radius: 20px;
+            padding: 4rem;
+            box-shadow: 0 10px 40px rgba(37, 99, 235, 0.1);
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .contact-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .contact-header p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        /* Contact Form Styling */
+        .contact-form-wrapper {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-form-wrapper h3 {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 0.9rem 1.2rem;
+            border: 2px solid var(--light-bg);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: var(--transition);
+            background: var(--white);
+            color: var(--dark-gray);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Contact Info Styling */
+        .contact-info-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-info-wrapper h3 {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .contact-info-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            transition: var(--transition);
+        }
+
+        .contact-info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15);
+        }
+
+        .info-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            min-width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-content h4 {
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .info-content p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-number {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem !important;
+        }
+
+        .features-highlight {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            flex-direction: column;
+        }
+
+        .features-highlight h4 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .features-highlight li {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+        }
+
+        .btn-channel {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .btn-channel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        /* ===== RESPONSIVE CONTACT ===== */
+        @media (max-width: 768px) {
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-container {
+                padding: 2rem;
+            }
+
+            .contact-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .contact-info-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .info-icon {
+                margin: 0 auto;
+            }
+        }
+        .cta-section {
+            max-width: 1400px;
+            margin: 6rem auto;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+        .cta-section p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .btn-cta {
+            background: white;
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #0f3460;
+            color: white;
+            padding: 4rem 2rem;
+            margin-top: 6rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            color: var(--accent);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section ul li a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--accent);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(96, 165, 250, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(96, 165, 250, 0.2);
+            padding-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .video-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: var(--transition);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-player {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            max-height: none;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .youtube-player {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.2);
+            margin-bottom: 2rem;
+            background: #000;
+        }
+
+        .youtube-player iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .modal-description {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            padding: 0 2rem 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-modal {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .btn-channel {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-channel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes typewriter {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 2rem 1rem;
+                min-height: auto;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            nav {
+                gap: 1rem;
+                display: none;
+            }
+
+            .header-container {
+                flex-direction: column;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .community-section {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+
+            .hero-illustration {
+                height: 300px;
+            }
+
+            .modal-content {
+                max-width: 95vw;
+                max-height: 95vh;
+                border-radius: 15px;
+            }
+
+            .modal-header {
+                padding: 1.5rem;
+            }
+
+            .modal-header h2 {
+                font-size: 1.3rem;
+            }
+
+            .modal-player {
+                padding: 1.5rem;
+            }
+
+            .modal-buttons {
+                padding: 0 1.5rem 1.5rem;
+                flex-direction: column;
+            }
+
+            .btn-modal {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .youtube-player {
+                aspect-ratio: 16 / 9;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-container {
+                padding: 2rem;
+            }
+
+            .contact-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .contact-info-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .info-icon {
+                margin: 0 auto;
+            }
+
+            .contact-form-wrapper,
+            .contact-info-wrapper {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">
+                <div class="logo-icon"></div>
+                Zypher Code
+            </a>
+            <nav>
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#tutorials">Tutorials</a>
+                <a href="#community">Community</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <div class="header-right">
+                <button class="notification-toggle" id="notificationToggle" title="Enable Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationBadge">0</span>
+                </button>
+                <a href="#" class="btn btn-primary">Start Coding Free</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== NOTIFICATION CENTER ===== -->
+    <div id="notificationCenter" class="notification-center">
+        <div class="notification-center-header">
+            <h3><i class="fas fa-bell"></i> Notifications</h3>
+            <button class="notification-center-close" onclick="closeNotificationCenter()">×</button>
+        </div>
+        <div class="notification-list" id="notificationList">
+            <div class="notification-empty">
+                <i class="fas fa-bell" style="font-size: 2rem; color: var(--gray); margin-bottom: 1rem; display: block;"></i>
+                <p>No notifications yet</p>
+                <small>Enable notifications to get updates about new tutorials!</small>
+            </div>
+        </div>
+        <div class="notification-center-footer">
+            <button class="btn-enable" onclick="requestNotificationPermission()">
+                <i class="fas fa-bell"></i> Enable Notifications
+            </button>
+            <button class="btn-clear" onclick="clearAllNotifications()">Clear All</button>
+        </div>
+    </div>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Learn Coding and Programming the Smart Way</h1>
+            <p class="hero-subheading">Master modern programming languages and build real-world software projects</p>
+            <p class="hero-description">Zypher Code is an online learning platform where beginners and developers can learn coding through tutorials, interactive lessons, and real projects.</p>
+            <div class="hero-buttons">
+                <a href="#tutorials" class="btn btn-primary">Start Learning</a>
+                <a href="javascript:openVideoModal()" class="btn btn-secondary">Watch Tutorials</a>
+            </div>
+            <div class="slider-dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+        
+        <div class="hero-illustration">
+            <div class="workspace-container">
+                <div class="monitor">
+                    <div class="monitor-screen">
+                        <div style="text-align: left;">
+                            <div class="code-line">function learn() {</div>
+                            <div class="code-line">  const skill = 'coding'</div>
+                            <div class="code-line">  return success;</div>
+                        </div>
+                    </div>
+                    <div class="monitor-stand"></div>
+                </div>
+
+                <div class="badge badge-python">Python</div>
+                <div class="badge badge-js">JavaScript</div>
+                <div class="badge badge-cpp">C++</div>
+                <div class="badge badge-html">HTML</div>
+
+                <div class="floating-icon icon-code"><i class="fas fa-code"></i></div>
+                <div class="floating-icon icon-gear"><i class="fas fa-cog"></i></div>
+                <div class="floating-icon icon-db"><i class="fas fa-database"></i></div>
+                <div class="floating-icon icon-cloud"><i class="fas fa-cloud"></i></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== VIDEO MODAL ===== -->
+    <div id="videoModal" class="video-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Learn Coding with Zypher Code Tutorials</h2>
+                <button class="modal-close" onclick="closeVideoModal()">&times;</button>
+            </div>
+            <div class="modal-player">
+                <div class="youtube-player">
+                    <iframe 
+                        id="youtubePlayer"
+                        width="100%" 
+                        height="100%" 
+                        src="https://www.youtube.com/embed/videoseries?list=PLwgJiDaL5vBp33uzU1OFZ4WANp83pwayH&controls=1&modestbranding=1&rel=0&showinfo=1&fs=1" 
+                        title="Zypher Code Tutorials Playlist" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen 
+                        loading="lazy"
+                        referrerpolicy="strict-origin-when-cross-origin">
+                    </iframe>
+                </div>
+                <p class="modal-description">
+                    <strong>Zypher Code Tutorial Playlist</strong><br><br>
+                    Welcome to our comprehensive collection of coding tutorials! Explore videos on web development, programming languages, and real-world projects. All tutorials are designed for both beginners and experienced developers. Watch, learn, and master coding skills at your own pace - directly on the Zypher Code website without leaving the platform.
+                </p>
+                <div class="modal-buttons">
+                    <a href="https://www.youtube.com/@ZypherCode-zc" target="_blank" class="btn-modal btn-channel">
+                        <i class="fab fa-youtube"></i> Visit Our YouTube Channel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="languages-section" id="about">
+        <h2 class="section-title">Popular Programming Languages</h2>
+        <div class="languages-grid">
+            <div class="lang-card">
+                <div class="lang-icon">🐍</div>
+                <h3>Python</h3>
+                <p>Beginner-friendly language perfect for data science and web development</p>
+                <a href="#" class="btn btn-primary">Start Learning</a>
+            </div>
+            <div class="lang-card">
+                <div class="lang-icon">⚙️</div>
+                <h3>JavaScript</h3>
+                <p>Master web development with the most popular language on the web</p>
+                <a href="#" class="btn btn-primary">Start Learning</a>
+            </div>
+            <div class="lang-card">
+                <div class="lang-icon">⚡</div>
+                <h3>C++</h3>
+                <p>Learn systems programming and high-performance applications</p>
+                <a href="#" class="btn btn-primary">Start Learning</a>
+            </div>
+            <div class="lang-card">
+                <div class="lang-icon">☕</div>
+                <h3>Java</h3>
+                <p>Build enterprise applications and Android mobile apps</p>
+                <a href="#" class="btn btn-primary">Start Learning</a>
+            </div>
+            <div class="lang-card">
+                <div class="lang-icon">🚀</div>
+                <h3>PHP</h3>
+                <p>Create dynamic websites and server-side web applications</p>
+                <a href="#" class="btn btn-primary">Start Learning</a>
+            </div>
+            <div class="lang-card">
+                <div class="lang-icon">🐹</div>
+                <h3>Go</h3>
+                <p>Fast and efficient programming for cloud and backend systems</p>
+                <a href="#" class="btn btn-primary">Start Learning</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES SECTION ===== -->
+    <section class="features-section">
+        <h2 class="section-title">Why Choose Zypher Code</h2>
+        <div class="features-grid">
+            <div class="feature-block">
+                <div class="feature-icon"><i class="fas fa-keyboard"></i></div>
+                <h3>Interactive Coding Lessons</h3>
+                <p>Learn by doing with our hands-on coding exercises and real-time feedback system</p>
+            </div>
+            <div class="feature-block">
+                <div class="feature-icon"><i class="fas fa-project-diagram"></i></div>
+                <h3>Real-World Projects</h3>
+                <p>Build portfolio-worthy projects from day one and gain practical experience</p>
+            </div>
+            <div class="feature-block">
+                <div class="feature-icon"><i class="fas fa-users"></i></div>
+                <h3>Developer Mentors</h3>
+                <p>Get guidance from experienced developers and industry professionals</p>
+            </div>
+            <div class="feature-block">
+                <div class="feature-icon"><i class="fas fa-comments"></i></div>
+                <h3>Active Community</h3>
+                <p>Connect with thousands of coders, share knowledge, and grow together</p>
+            </div>
+        </div>
+    </section>
+
+<!-- ===== LIVE CODE EDITOR ===== -->
+    <section class="editor-section">
+        <h2 class="section-title">Practice Coding in Real Time</h2>
+        <div class="editor-container">
+            <div class="editor-header">
+                <div class="editor-dot"></div>
+                <div class="editor-dot"></div>
+                <div class="editor-dot"></div>
+            </div>
+            <div class="editor-content">
+                <div>const <span style="color: #34d399;">skillLevel</span> = <span style="color: #fbbf24;">'Expert'</span>;</div>
+                <div>function <span style="color: #fbbf24;">buildProject</span>()</div>
+                <div>{</div>
+                <div>&nbsp;&nbsp;return <span style="color: #34d399;">success</span> && <span style="color: #34d399;">growth</span>;</div>
+                <div>}</div>
+                <br>
+                <div style="margin-top: 2rem;">
+                    <span class="tag">Frontend</span>
+                    <span class="tag">Backend</span>
+                    <span class="tag">API</span>
+                    <span class="tag">Database</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== YOUTUBE TUTORIALS SECTION ===== -->
+    <section class="youtube-section" id="tutorials">
+        <h2 class="section-title">Learn Coding from Our YouTube Tutorials</h2>
+        <div class="youtube-grid">
+            <div class="video-card">
+                <div class="video-thumbnail" style="background-image: url('video-thumbnail.png'); background-size: cover; background-position: center;">
+                    <div class="play-button"><i class="fas fa-play"></i></div>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">Web Development Full Course</h3>
+                    <p class="video-desc">Build a complete web application from scratch with HTML, CSS, and JavaScript. Learn everything you need to become a web developer.</p>
+                    <div class="video-meta">
+                        <span>45:20</span>
+                        <span>📹 Full Course</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <a href="https://www.youtube.com/@ZypherCode-zc" target="_blank" class="channel-link">
+                <i class="fab fa-youtube" style="margin-right: 0.5rem;"></i>Visit Our YouTube Channel
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== COMMUNITY SECTION ===== -->
+    <section class="community-section" id="community">
+        <div class="community-content">
+            <h2>Join the Zypher Code Developer Community</h2>
+            <div class="community-item">
+                <div class="community-icon"><i class="fas fa-trophy"></i></div>
+                <div class="community-text">
+                    <h3>Coding Challenges</h3>
+                    <p>Compete in weekly coding challenges and win prizes while improving your skills</p>
+                </div>
+            </div>
+            <div class="community-item">
+                <div class="community-icon"><i class="fas fa-comments"></i></div>
+                <div class="community-text">
+                    <h3>Developer Discussions</h3>
+                    <p>Engage with fellow developers, ask questions, and share your knowledge</p>
+                </div>
+            </div>
+            <div class="community-item">
+                <div class="community-icon"><i class="fas fa-rocket"></i></div>
+                <div class="community-text">
+                    <h3>Weekly Hackathons</h3>
+                    <p>Build amazing projects in 48 hours and showcase your coding abilities</p>
+                </div>
+            </div>
+            <div class="community-item">
+                <div class="community-icon"><i class="fas fa-handshake"></i></div>
+                <div class="community-text">
+                    <h3>Collaboration Projects</h3>
+                    <p>Team up with other coders on real-world projects and build your portfolio</p>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; font-size: 4rem;">
+            <i class="fas fa-users" style="color: var(--primary); opacity: 0.3;"></i>
+        </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="testimonials-section">
+        <h2 class="section-title">What Our Students Say</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"Zypher Code helped me learn programming faster and build real projects. The community support was incredible!"</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">AJ</div>
+                    <div class="author-info">
+                        <h4>Alex Johnson</h4>
+                        <p>Web Developer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"Best investment in my career. The courses are well-structured and the mentorship program accelerated my growth."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">SM</div>
+                    <div class="author-info">
+                        <h4>Sarah Martinez</h4>
+                        <p>Software Engineer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"From zero to hero in coding! Zypher Code's step-by-step approach made learning programming enjoyable and effective."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">PK</div>
+                    <div class="author-info">
+                        <h4>Priya Kumar</h4>
+                        <p>Full Stack Developer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PRICING ===== -->
+    <section class="pricing-section">
+        <h2 class="section-title">Simple Pricing Plans</h2>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="pricing-name">Starter Plan</div>
+                <div class="pricing-price">$9<span>/month</span></div>
+                <ul class="pricing-features">
+                    <li>10 Course Access</li>
+                    <li>Basic Coding Exercises</li>
+                    <li>Community Forum Access</li>
+                    <li>Email Support</li>
+                </ul>
+                <a href="#" class="btn btn-secondary" style="width: 100%; text-align: center;">Get Started</a>
+            </div>
+            <div class="pricing-card featured">
+                <div class="pricing-badge">Most Popular</div>
+                <div class="pricing-name">Pro Plan</div>
+                <div class="pricing-price">$29<span>/month</span></div>
+                <ul class="pricing-features">
+                    <li>All Courses Unlimited</li>
+                    <li>Advanced Exercises</li>
+                    <li>1-on-1 Mentorship</li>
+                    <li>Certificate of Completion</li>
+                    <li>Priority Support</li>
+                </ul>
+                <a href="#" class="btn btn-primary" style="width: 100%; text-align: center;">Start Free Trial</a>
+            </div>
+            <div class="pricing-card">
+                <div class="pricing-name">Ultimate Plan</div>
+                <div class="pricing-price">$79<span>/month</span></div>
+                <ul class="pricing-features">
+                    <li>Everything in Pro</li>
+                    <li>Dedicated Mentor</li>
+                    <li>Code Review Sessions</li>
+                    <li>Job Placement Support</li>
+                    <li>24/7 Premium Support</li>
+                </ul>
+                <a href="#" class="btn btn-secondary" style="width: 100%; text-align: center;">Contact Sales</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA SECTION ===== -->
+    <section class="cta-section">
+        <h2>Start Your Coding Journey Today</h2>
+        <p>Join thousands of students already learning programming with Zypher Code</p>
+        <a href="#" class="btn btn-cta">Join Zypher Code</a>
+    </section>
+
+    <!-- ===== CONTACT & WHATSAPP SECTION ===== -->
+    <section class="contact-section" id="contact">
+        <div class="contact-container">
+            <div class="contact-header">
+                <h2>Get in Touch with Zypher Code</h2>
+                <p>Have questions? Our team is here to help! Contact us via WhatsApp or fill out the form below.</p>
+            </div>
+
+            <div class="contact-content">
+                <!-- Contact Form -->
+                <div class="contact-form-wrapper">
+                    <h3>Send us a Message</h3>
+                    <form id="contactForm" class="contact-form" onsubmit="handleContactSubmit(event)">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+91 XXXXXXXXXX" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" placeholder="Type your message here..." rows="5" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%; cursor: pointer;">
+                            <i class="fab fa-whatsapp"></i> Send via WhatsApp
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="contact-info-wrapper">
+                    <h3>Contact Information</h3>
+                    
+                    <div class="contact-info-card">
+                        <div class="info-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>WhatsApp Support</h4>
+                            <p>Chat with us on WhatsApp for instant support</p>
+                            <a href="https://wa.me/917053088525?text=Hello%20Zypher%20Code%2C%20I%20need%20help" target="_blank" class="btn btn-channel">
+                                <i class="fab fa-whatsapp"></i> Contact on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Phone Number</h4>
+                            <p class="contact-number">+91 7053088525</p>
+                            <p style="font-size: 0.85rem; color: var(--gray);">Available 9 AM - 6 PM IST</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Email Support</h4>
+                            <p>Get support via email</p>
+                            <a href="/cdn-cgi/l/email-protection#385b50514a595f5b50514a595f4a5952484d4c080c00785f59555154165b5755" style="color: var(--primary); text-decoration: none; font-weight: 600;"><span class="__cf_email__" data-cfemail="f192999883909692999883909683909b818485c1c5c9b196909c989ddf929e9c">[email&#160;protected]</span></a>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-card features-highlight">
+                        <h4>Why Choose Zypher Code?</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i> Expert Instructors</li>
+                            <li><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i> 24/7 Support</li>
+                            <li><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i> Real-World Projects</li>
+                            <li><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i> Industry-Standard Curriculum</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <footer>
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Guides</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <ul>
+                        <li><a href="#">Forum</a></li>
+                        <li><a href="#">Events</a></li>
+                        <li><a href="#">Discord</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon" title="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-icon" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://www.youtube.com/@ZypherCode-zc" class="social-icon" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Zypher Code. All rights reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Video modal functions
+        function openVideoModal() {
+            const modal = document.getElementById('videoModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside the content
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoModal = document.getElementById('videoModal');
+            if (videoModal) {
+                videoModal.addEventListener('click', function(event) {
+                    if (event.target === this) {
+                        closeVideoModal();
+                    }
+                });
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeVideoModal();
+            }
+        });
+
+        // WhatsApp Contact Form Handler
+        function handleContactSubmit(event) {
+            event.preventDefault();
+
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const message = document.getElementById('message').value;
+
+            // Format the message for WhatsApp
+            const whatsappMessage = `Hello Zypher Code!
+
+I'm reaching out with the following information:
+
+*Name:* ${name}
+*Email:* ${email}
+*Phone:* ${phone}
+
+*Message:*
+${message}
+
+Please contact me back at your earliest convenience. Thank you!`;
+
+            // Encode the message for URL
+            const encodedMessage = encodeURIComponent(whatsappMessage);
+
+            // WhatsApp Business API number
+            const whatsappNumber = '917053088525';
+
+            // Open WhatsApp with pre-filled message
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            
+            // Open in new window
+            window.open(whatsappUrl, '_blank');
+
+            // Reset form
+            document.getElementById('contactForm').reset();
+
+            // Show success message
+            alert('Opening WhatsApp... Your message will be sent to Zypher Code support team.');
+        }
+
+        // ===== NOTIFICATION SYSTEM =====
+        let notificationsEnabled = localStorage.getItem('notificationsEnabled') === 'true';
+        let notificationsList = JSON.parse(localStorage.getItem('notificationsList')) || [];
+
+        // Initialize notification system on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeNotificationSystem();
+            updateNotificationUI();
+        });
+
+        function initializeNotificationSystem() {
+            const toggle = document.getElementById('notificationToggle');
+            
+            // Check if browser supports notifications
+            if (!('Notification' in window)) {
+                toggle.style.opacity = '0.5';
+                toggle.title = 'Notifications not supported in your browser';
+                return;
+            }
+
+            // Check current permission status
+            if (Notification.permission === 'granted') {
+                notificationsEnabled = true;
+                localStorage.setItem('notificationsEnabled', 'true');
+                updateNotificationUI();
+            }
+
+            // Add click handler
+            toggle.addEventListener('click', function() {
+                const center = document.getElementById('notificationCenter');
+                center.classList.toggle('open');
+            });
+
+            // Close notification center when clicking outside
+            document.addEventListener('click', function(event) {
+                const center = document.getElementById('notificationCenter');
+                const toggle = document.getElementById('notificationToggle');
+                
+                if (!center.contains(event.target) && !toggle.contains(event.target)) {
+                    center.classList.remove('open');
+                }
+            });
+        }
+
+        function requestNotificationPermission() {
+            if (!('Notification' in window)) {
+                alert('Your browser does not support notifications');
+                return;
+            }
+
+            if (Notification.permission === 'granted') {
+                notificationsEnabled = true;
+                updateNotificationUI();
+                sendTestNotification();
+                return;
+            }
+
+            if (Notification.permission !== 'denied') {
+                Notification.requestPermission().then(function(permission) {
+                    if (permission === 'granted') {
+                        notificationsEnabled = true;
+                        localStorage.setItem('notificationsEnabled', 'true');
+                        updateNotificationUI();
+                        sendTestNotification();
+                    }
+                });
+            }
+        }
+
+        function updateNotificationUI() {
+            const toggle = document.getElementById('notificationToggle');
+            const badge = document.getElementById('notificationBadge');
+            
+            if (notificationsEnabled || Notification.permission === 'granted') {
+                toggle.classList.add('active');
+                updateNotificationBadge();
+            } else {
+                toggle.classList.remove('active');
+            }
+        }
+
+        function updateNotificationBadge() {
+            const badge = document.getElementById('notificationBadge');
+            const unreadCount = notificationsList.filter(n => !n.read).length;
+            
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function openNotificationCenter() {
+            const center = document.getElementById('notificationCenter');
+            center.classList.add('open');
+            renderNotifications();
+        }
+
+        function closeNotificationCenter() {
+            const center = document.getElementById('notificationCenter');
+            center.classList.remove('open');
+        }
+
+        function renderNotifications() {
+            const notificationList = document.getElementById('notificationList');
+            
+            if (notificationsList.length === 0) {
+                notificationList.innerHTML = `
+                    <div class="notification-empty">
+                        <i class="fas fa-bell" style="font-size: 2rem; color: var(--gray); margin-bottom: 1rem; display: block;"></i>
+                        <p>No notifications yet</p>
+                        <small>Enable notifications to get updates about new tutorials!</small>
+                    </div>
+                `;
+                return;
+            }
+
+            notificationList.innerHTML = notificationsList
+                .sort((a, b) => b.timestamp - a.timestamp)
+                .map((notification, index) => `
+                    <div class="notification-item" onclick="handleNotificationClick(${index})">
+                        <div class="notification-item-title">${notification.title}</div>
+                        <div class="notification-item-message">${notification.message}</div>
+                        <div class="notification-item-time">${getTimeAgo(notification.timestamp)}</div>
+                    </div>
+                `).join('');
+        }
+
+        function handleNotificationClick(index) {
+            const notification = notificationsList[index];
+            notification.read = true;
+            saveNotifications();
+            updateNotificationBadge();
+            
+            if (notification.url) {
+                window.location.href = notification.url;
+            }
+            closeNotificationCenter();
+        }
+
+        function clearAllNotifications() {
+            notificationsList = [];
+            saveNotifications();
+            renderNotifications();
+            updateNotificationBadge();
+        }
+
+        function addNotification(title, message, type = 'tutorial', url = '#tutorials') {
+            const notification = {
+                id: Date.now(),
+                title: title,
+                message: message,
+                type: type,
+                url: url,
+                timestamp: Date.now(),
+                read: false
+            };
+
+            notificationsList.unshift(notification);
+            saveNotifications();
+            updateNotificationBadge();
+            
+            // Send browser notification if enabled
+            if (notificationsEnabled && 'Notification' in window && Notification.permission === 'granted') {
+                sendBrowserNotification(notification);
+            }
+
+            renderNotifications();
+        }
+
+        function saveNotifications() {
+            localStorage.setItem('notificationsList', JSON.stringify(notificationsList));
+        }
+
+        function sendTestNotification() {
+            const notification = new Notification('Zypher Code Notifications Enabled! 🎉', {
+                icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%232563EB" width="100" height="100" rx="20"/><text x="50" y="60" font-size="50" font-weight="bold" text-anchor="middle" fill="white">ZC</text></svg>',
+                badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%232563EB"/></svg>',
+                tag: 'zypher-test',
+                body: 'You\'ll now receive notifications about new tutorials and updates!',
+                requireInteraction: false
+            });
+
+            notification.onclick = function() {
+                window.focus();
+                notification.close();
+            };
+        }
+
+        function sendBrowserNotification(notification) {
+            const icons = {
+                tutorial: '🎥',
+                course: '📚',
+                update: '⚡',
+                announcement: '📢'
+            };
+
+            const pushNotification = new Notification(`${icons[notification.type]} ${notification.title}`, {
+                icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%232563EB" width="100" height="100" rx="20"/><text x="50" y="60" font-size="50" font-weight="bold" text-anchor="middle" fill="white">ZC</text></svg>',
+                tag: 'zypher-' + notification.id,
+                body: notification.message,
+                requireInteraction: false,
+                actions: [
+                    {action: 'open', title: 'View Tutorial'}
+                ]
+            });
+
+            pushNotification.onclick = function() {
+                window.focus();
+                if (notification.url) {
+                    window.location.href = notification.url;
+                }
+                pushNotification.close();
+            };
+        }
+
+        function getTimeAgo(timestamp) {
+            const now = Date.now();
+            const diff = now - timestamp;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+
+            if (minutes < 1) return 'Just now';
+            if (minutes < 60) return `${minutes}m ago`;
+            if (hours < 24) return `${hours}h ago`;
+            if (days < 7) return `${days}d ago`;
+            
+            return new Date(timestamp).toLocaleDateString();
+        }
+
+        // Demo: Add sample notifications (remove in production)
+        function addSampleNotifications() {
+            addNotification(
+                'New Web Development Tutorial',
+                'Learn advanced React patterns and hooks with our latest video',
+                'tutorial',
+                '#tutorials'
+            );
+            addNotification(
+                'System Update',
+                'Zypher Code platform has been updated with new features',
+                'update',
+                '#home'
+            );
+            addNotification(
+                'New Course Available',
+                'Full Stack Development Course is now live and accepting students',
+                'course',
+                '#tutorials'
+            );
+        }
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Slider dots animation
+        const dots = document.querySelectorAll('.dot');
+        let currentDot = 0;
+        setInterval(() => {
+            dots.forEach(d => d.classList.remove('active'));
+            currentDot = (currentDot + 1) % dots.length;
+            dots[currentDot].classList.add('active');
+        }, 3000);
+
+        // Notification toggle click handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const notificationToggle = document.getElementById('notificationToggle');
+            if (notificationToggle) {
+                notificationToggle.addEventListener('click', function() {
+                    const center = document.getElementById('notificationCenter');
+                    center.classList.toggle('open');
+                    renderNotifications();
+                });
+            }
+        });
+
+        // Video card click animation and YouTube redirect
+        document.querySelectorAll('.video-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                    // Open YouTube video in new tab
+                    window.open('https://youtu.be/D3hBqkp_2b8', '_blank');
+                }, 150);
+            });
+        });
+
+        // Add scroll animation for elements
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease-out';
+                    observer.unobserve(
+                    entry.target);
+                }
+            });
+        });
+
+        document.querySelectorAll('.feature-card, .video-card, .stat-card').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+
+    <!-- ===== COURSE DASHBOARD ===== -->
+    <link rel="stylesheet" href="course-style.css">
+    <script defer src="course-script.js"></script>
+
+    <!-- ===== EMAIL MAILTO ENHANCER ===== -->
+    <script defer src="email-mailto.js"></script>
+
+    <!-- ===== PROJECTS + ORDER FORM ===== -->
+    <link rel="stylesheet" href="projects-style.css">
+    <script defer src="projects-script.js"></script>
+
+</body>
+</html>
